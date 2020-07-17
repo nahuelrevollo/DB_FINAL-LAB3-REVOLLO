@@ -58,20 +58,20 @@ GO
 CREATE TABLE Usuarios(
 
 	ID int not null primary key identity (1,1),
-	Dni int not null,	
+	Dni int not null check (Dni>0),	
 	Apellido varchar(50) not null,
 	Nombre varchar(50) not null,
 	Nick_Name varchar(50) not null,
 	Contraseña varchar(50)not null,
 	Email varchar(50) unique,
 	Sexo varchar(1)  null,
-	telefono int not null,
+	telefono int not null check (telefono>0),
 
 	
 	IDprovincia int not null foreign key references Provincias(ID),
 	IDtipo int not null foreign key references Tipos_Usuarios(ID),
 	
-	F_nacimiento date not null,
+	F_nacimiento date not null ,
 	
 	Activo bit not null,
 
@@ -86,9 +86,9 @@ CREATE TABLE Direcciones(
 	IDusuario int not null foreign key references Usuarios(ID),
 	IDprovincia int not null foreign key references Provincias(ID),
 	Localidad varchar(50) not null,
-	CP int not null,
+	CP int not null check (CP>0),
 	Calle varchar(50) not null,
-	Altura int null,
+	Altura int null check (Altura>0),
 	Entrecalle1 varchar(50) null,
 	Entrecalle2 varchar(50)null,
 	Activo bit not null,
@@ -154,9 +154,9 @@ CREATE TABLE PrecioyStock
 (
 	IDarticulo  int primary key,
 	
-	Stock int not null,
-	PrecioVenta money not null,
-	PrecioCompra money not null,
+	Stock int not null check (Stock>=0),
+	PrecioVenta money not null check (PrecioVenta>0),
+	PrecioCompra money not null check (PrecioCompra>0),
 	Activo bit not null,
 	
 )
@@ -171,9 +171,9 @@ CREATE TABLE Envios(
 	
 	IDprovincia int not null foreign key references Provincias(ID),
 	Localidad varchar(50)not null,
-	Cp int not null,
+	Cp int not null check (CP>0),
 	Calle varchar(50)not null,
-	Altura int null,
+	Altura int null check (Altura>0),
 	Entrecalle1 varchar(50) null,
 	Entrecalle2 varchar(50)null,
 	Activo bit not null,
@@ -189,8 +189,8 @@ create table Ventas(
 	ID int not null primary key identity (1,1),
 	IDusuario int not null foreign key references Usuarios(ID),
 	Fecha_Venta date not null,
-	Total int not null,
-	Pagado bit not null,
+	Total int not null check (Total>0),
+	Pagado bit not null ,
 	
 )
 
@@ -200,8 +200,8 @@ CREATE TABLE ArticulosxVenta(
 
 	IDventa int not null foreign key references Ventas(ID),
 	IDarticulos int not null foreign key references Articulos(ID),
-	Precio money not null,
-	Cantidad_vendida int not null,
+	Precio money not null check (Precio>=0),
+	Cantidad_vendida int not null check (Cantidad_vendida>0),
 	Activo bit not null,
 	primary key (IDventa, IDarticulos),
 )
